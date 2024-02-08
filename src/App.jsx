@@ -41,13 +41,6 @@ function App() {
 
   return (
     <main className={classes.content}>
-      {/* <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={showError}
-        onClick={handleSnackBarClose}
-        onClose={handleSnackBarClose}
-        message={errorMessage}
-      /> */}
       <CustomSnackbar
         open={showError}
         onClose={handleSnackBarClose}
