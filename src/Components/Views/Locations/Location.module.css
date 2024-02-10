@@ -1,0 +1,10 @@
+.location-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.location-item {
+  height: 1.5rem;
+  border-bottom: 1px solid #cacaca;
+}

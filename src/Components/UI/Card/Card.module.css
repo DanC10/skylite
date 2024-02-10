@@ -8,4 +8,10 @@
   height: 3.5rem;
   display: flex;
   justify-content: center;
+  transition: height 0.5s ease;
+}
+
+.expanded {
+  height: 25rem;
+  display: block;
 }
