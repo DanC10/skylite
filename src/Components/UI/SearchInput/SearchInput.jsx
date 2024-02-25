@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import SearchIcon from "@mui/icons-material/Search";
@@ -8,6 +8,11 @@ import IconButton from "@mui/material/IconButton";
 
 const SearchInput = ({ placeholder, onSearch }) => {
   const [inputValue, setInputValue] = useState("");
+
+  const handleClick = () => {
+    onSearch(inputValue);
+  };
+
   return (
     <FormControl sx={{ width: "100%" }} variant="outlined">
       <InputLabel htmlFor="outlined-adornment-search">{placeholder}</InputLabel>
@@ -18,11 +23,7 @@ const SearchInput = ({ placeholder, onSearch }) => {
         onChange={(e) => setInputValue(e.target.value)}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton
-              aria-label="search"
-              edge="end"
-              onClick={() => onSearch(inputValue)}
-            >
+            <IconButton aria-label="search" edge="end" onClick={handleClick}>
               <SearchIcon />
             </IconButton>
           </InputAdornment>

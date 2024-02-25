@@ -1,62 +1,44 @@
 import classes from "./App.module.css";
 import Card from "./Components/UI/Card/Card";
-import SearchInput from "./Components/UI/SearchInput/SearchInput";
-import CircularProgress from "@mui/material/CircularProgress";
-import Snackbar from "@mui/material/Snackbar";
-import React, { useState } from "react";
-import CustomSnackbar from "./Components/UI/Snackbar/CustomSnackbar";
+import { useState, useEffect } from "react";
+import SearchView from "./Components/Views/Search/SearchView";
+import LocationView from "./Components/Views/Locations/LocationView";
 
 function App() {
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState([
+    {
+      name: "Kincardine",
+      local_names: {
+        en: "Kincardine",
+        ga: "Cinn Chárdainn",
+        gd: "Ceann Chàrdainn"
+      },
+      lat: 56.0683954,
+      lon: -3.7184637,
+      country: "GB",
+      state: "Scotland"
+    },
+    {
+      name: "Kincardine",
+      lat: 44.1776378,
+      lon: -81.6348713,
+      country: "CA",
+      state: "Ontario"
+    }
+  ]);
+  const [expandCard, setExpandCard] = useState(false);
 
-  const handleSearch = (value) => {
-    if (!value.trim()) return false;
-    setLoading(true);
-    fetch(`http://localhost:3000/locations?q=${value}`)
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        } else if (res.status === 404) {
-          throw new Error("No locations found.");
-        } else {
-          throw new Error("Something went wrong, please try again.");
-        }
-      })
-      .then((res) => {
-        setLocations(res);
-      })
-      .catch((err) => {
-        setErrorMessage(err.message);
-        setShowError(true);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const handleSnackBarClose = () => {
-    setShowError(false);
-  };
+  useEffect(() => {
+    if (locations.length) setExpandCard(true);
+  }, [locations]);
 
   return (
-    <main className={classes.content}>
-      <CustomSnackbar
-        open={showError}
-        onClose={handleSnackBarClose}
-        message={errorMessage}
-      />
-      <Card>
-        {!loading ? (
-          <SearchInput
-            placeholder="Enter your location"
-            onSearch={handleSearch}
-          />
-        ) : (
-          <CircularProgress sx={{ display: "flex", m: "auto 0" }} />
-        )}
+    <div className={classes.content}>
+      <Card expand={expandCard}>
+        {!locations.length && <SearchView onLocationsFound={setLocations} />}
+        {!!locations.length && <LocationView locations={locations} />}
       </Card>
-    </main>
+    </div>
   );
 }
 
