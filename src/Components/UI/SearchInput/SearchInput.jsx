@@ -22,7 +22,7 @@ const SearchInput = ({ placeholder, onSearch }) => {
         onKeyDown={(e) => e.key === "Enter" && onSearch(inputValue)}
         onChange={(e) => setInputValue(e.target.value)}
         endAdornment={
-          <InputAdornment position="end">
+          <InputAdornment position="end" style={{ width: "auto" }}>
             <IconButton aria-label="search" edge="end" onClick={handleClick}>
               <SearchIcon />
             </IconButton>

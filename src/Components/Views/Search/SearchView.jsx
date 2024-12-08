@@ -30,10 +30,7 @@ const SearchView = () => {
     } catch (e) {
       setErrorMessage(e.message);
       setShowError(true);
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 550);
+      setLoading(false);
     }
   };
 

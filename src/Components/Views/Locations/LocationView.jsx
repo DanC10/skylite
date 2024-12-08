@@ -17,15 +17,18 @@ const LocationView = () => {
       setExpandCard(true);
       setTimeout(() => {
         setLocations(state.locations);
+        setLoading(false);
       }, 550);
     }
-  }, [state, navigate, setExpandCard]);
+  }, [state, navigate, setExpandCard, setLoading]);
 
   const locationClicked = (location) => {
     setLoading(true);
     fetch(
       `http://localhost:3000/weather?lat=${location.lat}&lon=${location.lon}`
-    ).then((res) => {});
+    ).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -38,7 +41,15 @@ const LocationView = () => {
             onClick={() => locationClicked(l)}
           >
             {`${l.name}, ${l.state}, ${l.country}`}
-            <ReactCountryFlag svg countryCode={l.country} />
+            <ReactCountryFlag
+              svg
+              alt={l.country}
+              style={{
+                width: "1.75rem",
+                height: "1.75rem"
+              }}
+              countryCode={l.country}
+            />
           </div>
         );
       })}

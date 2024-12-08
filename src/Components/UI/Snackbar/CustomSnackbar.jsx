@@ -1,4 +1,3 @@
-import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import SnackbarContent from "@mui/material/SnackbarContent";
 import IconButton from "@mui/material/IconButton";

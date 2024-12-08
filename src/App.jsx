@@ -11,9 +11,7 @@ function App() {
   return (
     <div className={classes.content}>
       <Card expand={expandCard}>
-        <div
-          style={{ width: "100%", display: `${loading ? "none" : "block"}` }}
-        >
+        <div style={{ width: "100%", display: `${loading ? "none" : "flex"}` }}>
           <Outlet context={{ setExpandCard, setLoading }} />
         </div>
         {loading && <CircularProgress sx={{ display: "flex", m: "auto 0" }} />}
