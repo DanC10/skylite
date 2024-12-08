@@ -1,41 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchInput from "../../UI/SearchInput/SearchInput";
-import { CircularProgress } from "@mui/material";
 import CustomSnackbar from "../../UI/Snackbar/CustomSnackbar";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const SearchView = ({ onLocationsFound }) => {
-  const [loading, setLoading] = useState(false);
+const SearchView = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const handleSearch = (value) => {
+  const { setExpandCard, setLoading } = useOutletContext();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setExpandCard(false);
+  }, [setExpandCard]);
+
+  const handleSearch = async (value) => {
     if (!value.trim()) return false;
     setLoading(true);
-    fetch(`http://localhost:3000/locations?q=${value}`)
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        } else if (res.status === 404) {
-          throw new Error("No locations found.");
-        } else {
-          throw new Error("Something went wrong, please try again.");
-        }
-      })
-      .then((res) => {
-        onLocationsFound(res);
-      })
-      .catch((err) => {
-        setErrorMessage(err.message);
-        setShowError(true);
-      })
-      .finally(() => setLoading(false));
+    try {
+      const response = await fetch(
+        `http://localhost:3000/locations?q=${value}`
+      );
+      const data = await response.json();
+
+      setTimeout(() => {
+        navigate("/locations", { state: { locations: data } });
+      }, 550);
+    } catch (e) {
+      setErrorMessage(e.message);
+      setShowError(true);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 550);
+    }
   };
 
   const handleSnackBarClose = () => {
     setShowError(false);
   };
 
-  return !loading ? (
+  return (
     <>
       <CustomSnackbar
         open={showError}
@@ -44,8 +50,6 @@ const SearchView = ({ onLocationsFound }) => {
       />
       <SearchInput placeholder="Enter your city" onSearch={handleSearch} />
     </>
-  ) : (
-    <CircularProgress sx={{ display: "flex", m: "auto 0" }} />
   );
 };
 

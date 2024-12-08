@@ -1,26 +1,22 @@
 import classes from "./App.module.css";
 import Card from "./Components/UI/Card/Card";
-import { useState, useEffect } from "react";
-import SearchView from "./Components/Views/Search/SearchView";
-import LocationView from "./Components/Views/Locations/LocationView";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 function App() {
-  const [locations, setLocations] = useState([]);
-
   const [expandCard, setExpandCard] = useState(false);
-
-  useEffect(() => {
-    if (locations.length) setExpandCard(true);
-  }, [locations]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className={classes.content}>
       <Card expand={expandCard}>
-        {!locations.length ? (
-          <SearchView onLocationsFound={setLocations} />
-        ) : (
-          <LocationView locations={locations} />
-        )}
+        <div
+          style={{ width: "100%", display: `${loading ? "none" : "block"}` }}
+        >
+          <Outlet context={{ setExpandCard, setLoading }} />
+        </div>
+        {loading && <CircularProgress sx={{ display: "flex", m: "auto 0" }} />}
       </Card>
     </div>
   );
