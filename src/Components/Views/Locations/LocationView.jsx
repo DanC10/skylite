@@ -1,8 +1,8 @@
 import classes from "./Location.module.css";
-import ReactCountryFlag from "react-country-flag";
 import { useLocation, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LocationItem from "../../UI/LocationItem/LocationItem";
 
 const LocationView = () => {
   const [locations, setLocations] = useState([]);
@@ -22,8 +22,8 @@ const LocationView = () => {
     }
   }, [state, navigate, setExpandCard, setLoading]);
 
-  const locationClicked = (location) => {
-    setLoading(true);
+  const handleLocationClicked = (location) => {
+    //  setLoading(true);
     fetch(
       `http://localhost:3000/weather?lat=${location.lat}&lon=${location.lon}`
     ).then((res) => {
@@ -33,26 +33,13 @@ const LocationView = () => {
 
   return (
     <div className={classes["location-container"]}>
-      {locations.map((l, i) => {
-        return (
-          <div
-            key={i}
-            className={classes["location-item"]}
-            onClick={() => locationClicked(l)}
-          >
-            {`${l.name}, ${l.state}, ${l.country}`}
-            <ReactCountryFlag
-              svg
-              alt={l.country}
-              style={{
-                width: "1.75rem",
-                height: "1.75rem"
-              }}
-              countryCode={l.country}
-            />
-          </div>
-        );
-      })}
+      {locations.map((location, i) => (
+        <LocationItem
+          key={i}
+          location={location}
+          onLocationClick={handleLocationClicked}
+        />
+      ))}
     </div>
   );
 };

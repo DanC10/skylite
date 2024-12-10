@@ -4,16 +4,3 @@
   height: 100%;
   width: 100%;
 }
-
-.location-item {
-  height: 1rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #cacaca;
-  cursor: pointer;
-  display: flex;
-  font-weight: 500;
-  justify-content: space-between;
-  &:hover {
-    background-color: #e7e7e7;
-  }
-}
